@@ -1,4 +1,4 @@
-(defproject clj-webdriver "0.7.2"
+(defproject clj-webdriver "0.7.3"
   :description "Clojure API for Selenium-WebDriver"
   :url "https://github.com/semperos/clj-webdriver"
   :license {:name "Eclipse Public License"
@@ -19,11 +19,13 @@
                                   [ring/ring-jetty-adapter "1.4.0"]
                                   [enlive "1.0.0" :exclusions [org.clojure/clojure]]
                                   [net.cgrand/moustache "1.0.0" :exclusions [org.clojure/clojure ring/ring-core]]
-                                  ;; Needed by "remote" code
-                                  [org.seleniumhq.selenium/selenium-server "2.47.1"]
+                                  ;; Needed by "remote" code                                  
+                                  [org.seleniumhq.selenium/selenium-server "2.53.0"]
                                   ;; Needed by core code
-                                  [org.seleniumhq.selenium/selenium-java "2.47.0"]
-                                  [org.seleniumhq.selenium/selenium-remote-driver "2.47.1"]
+                                  [org.seleniumhq.selenium/selenium-java "2.53.0"]
+                                  [org.seleniumhq.selenium/selenium-firefox-driver "2.53.0"]
+                                  [org.seleniumhq.selenium/selenium-api "2.53.0"]
+                                  [org.seleniumhq.selenium/selenium-remote-driver "2.53.0"]                                  
                                   [com.codeborne/phantomjsdriver "1.2.1"
                                    :exclusion [org.seleniumhq.selenium/selenium-java
                                                org.seleniumhq.selenium/selenium-server

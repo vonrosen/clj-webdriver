@@ -1,6 +1,7 @@
 (ns clj-webdriver.firefox
   (:require [clojure.java.io :as io])
-  (:import org.openqa.selenium.firefox.FirefoxProfile))
+  (:import org.openqa.selenium.firefox.FirefoxProfile
+           org.openqa.selenium.remote.DesiredCapabilities))
 
 (defn new-profile
   "Create an instance of `FirefoxProfile`"
@@ -47,3 +48,12 @@
   "Instantiate a new FirefoxProfile from a proper JSON representation."
   [^String json]
   (FirefoxProfile/fromJson json))
+
+(defn new-capabilities
+  "Instantiate a new Firefox Capabilities object."
+  [capabilities]  
+  (let [ffcapabilities (DesiredCapabilities/firefox)]
+    (doseq [[k v] (map identity capabilities)] 
+      (.setCapability ffcapabilities k v))    
+    (prn ffcapabilities)
+    ffcapabilities))

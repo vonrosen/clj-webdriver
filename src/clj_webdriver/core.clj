@@ -27,6 +27,7 @@
            [org.openqa.selenium By WebDriver WebElement
                                 OutputType NoSuchElementException Keys]
            org.openqa.selenium.firefox.FirefoxDriver
+           org.openqa.selenium.firefox.MarionetteDriver
            org.openqa.selenium.ie.InternetExplorerDriver
            org.openqa.selenium.chrome.ChromeDriver
            org.openqa.selenium.htmlunit.HtmlUnitDriver
@@ -172,6 +173,7 @@
 (def ^{:doc "Map of keywords to available WebDriver classes."}
   webdriver-drivers
   {:firefox FirefoxDriver
+   :marionette MarionetteDriver
    :ie InternetExplorerDriver
    :internet-explorer InternetExplorerDriver
    :chrome ChromeDriver
@@ -194,10 +196,18 @@
   (.newInstance (or (browser webdriver-drivers) browser)))
 
 (defmethod new-webdriver :firefox
-  [{:keys [browser profile]}]
+  [{:keys [browser profile capabilities]}]
+  (if capabilities
+        (FirefoxDriver. (ff/new-capabilities capabilities))
+        (FirefoxDriver.)))
+
+(defmethod new-webdriver :marionette
+  [{:keys [browser profile capabilities]}]  
   (if profile
-    (FirefoxDriver. profile)
-    (FirefoxDriver.)))
+    (MarionetteDriver. profile)
+    (if capabilities
+      (MarionetteDriver. (ff/new-capabilities capabilities))
+      (MarionetteDriver.))))
 
 (defmethod new-webdriver :phantomjs
   [{:keys [javascript-enabled? phantomjs-executable takes-screenshot?] :as browser-spec}]
@@ -234,12 +244,13 @@
    The `:profile` should be an instance of FirefoxProfile you wish to use.
    The `:cache-spec` can contain `:strategy`, `:args`, `:include` and/or `:exclude keys. See documentation on caching for more details."
   ([browser-spec]
-     (let [{:keys [browser profile cache-spec] :or {browser :firefox
-                                                    profile nil
-                                                    cache-spec {}}} browser-spec]
+     (let [{:keys [browser profile cache-spec capabilities] :or {browser :firefox
+                                                     profile nil
+                                                     cache-spec {}}} browser-spec]
 
        (init-driver {:webdriver (new-webdriver (merge {:browser browser
-                                                       :profile profile}
+                                                       :profile profile
+                                                       :capabilities capabilities}
                                                       browser-spec))
                      :cache-spec cache-spec}))))
 
