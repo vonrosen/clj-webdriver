@@ -1,5 +1,4 @@
 (ns clj-webdriver.firefox
-(ns clj-webdriver.firefox
   (:require [clojure.java.io :as io])
   (:import org.openqa.selenium.firefox.FirefoxProfile
            org.openqa.selenium.remote.DesiredCapabilities))
