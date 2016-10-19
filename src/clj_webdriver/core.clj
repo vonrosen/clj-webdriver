@@ -197,9 +197,11 @@
 
 (defmethod new-webdriver :firefox
   [{:keys [browser profile capabilities]}]
-  (if capabilities
-        (FirefoxDriver. (ff/new-capabilities capabilities))
-        (FirefoxDriver.)))
+  (if profile
+    (FirefoxDriver. profile)
+    (if capabilities
+      (FirefoxDriver. (ff/new-capabilities capabilities))
+      (FirefoxDriver.))))
 
 (defmethod new-webdriver :marionette
   [{:keys [browser profile capabilities]}]  
