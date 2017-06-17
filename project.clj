@@ -1,4 +1,4 @@
-(defproject vonrosen/clj-webdriver "0.7.3"
+(defproject vonrosen/clj-webdriver "0.7.5-SNAPSHOT"
   :description "Clojure API for Selenium-WebDriver"
   :url "https://github.com/semperos/clj-webdriver"
   :license {:name "Eclipse Public License"
@@ -9,8 +9,17 @@
                  [org.clojure/tools.logging "0.2.3"]
                  [clj-http "2.0.0"]
                  [cheshire "5.5.0"]
-                 [org.mortbay.jetty/jetty "6.1.25"]]
+                 [org.mortbay.jetty/jetty "6.1.25"]                 
+                 ;; Needed by "remote" code                                  
+                 [org.seleniumhq.selenium/selenium-server "2.53.0"]
+                 ;; Needed by core code
+                 [org.seleniumhq.selenium/selenium-api "2.53.0" :exclusions [com.google.guava/guava]]
+                 [org.seleniumhq.selenium/selenium-firefox-driver "2.53.0" :exclusions [com.google.guava/guava]]
+                 [org.seleniumhq.selenium/selenium-htmlunit-driver "2.52.0" :exclusions [com.google.guava/guava]]
+                 [org.seleniumhq.selenium/selenium-java "2.53.0" :exclusions [com.google.guava/guava]]
+                 [org.seleniumhq.selenium/selenium-remote-driver "2.53.0" :exclusions [com.google.guava/guava]]]
   :deploy-repositories [["releases" :clojars]]
+  :plugins [[camechis/deploy-uberjar "0.3.0"]]
   :jar-exclusions [#".*\.html" #"^public/"]
   :profiles {:dev {:dependencies [[org.clojure/clojure "1.7.0"]
                                   [org.clojure/tools.reader "0.10.0-alpha3"]
@@ -22,10 +31,11 @@
                                   ;; Needed by "remote" code                                  
                                   [org.seleniumhq.selenium/selenium-server "2.53.0"]
                                   ;; Needed by core code
-                                  [org.seleniumhq.selenium/selenium-java "2.53.0"]
-                                  [org.seleniumhq.selenium/selenium-firefox-driver "2.53.0"]
-                                  [org.seleniumhq.selenium/selenium-api "2.53.0"]
-                                  [org.seleniumhq.selenium/selenium-remote-driver "2.53.0"]                                  
+                                  [org.seleniumhq.selenium/selenium-api "2.53.0" :exclusions [com.google.guava/guava]]
+                                  [org.seleniumhq.selenium/selenium-firefox-driver "2.53.0" :exclusions [com.google.guava/guava]]
+                                  [org.seleniumhq.selenium/selenium-htmlunit-driver "2.52.0" :exclusions [com.google.guava/guava]]
+                                  [org.seleniumhq.selenium/selenium-java "2.53.0" :exclusions [com.google.guava/guava]]
+                                  [org.seleniumhq.selenium/selenium-remote-driver "2.53.0" :exclusions [com.google.guava/guava]]                                  
                                   [com.codeborne/phantomjsdriver "1.2.1"
                                    :exclusion [org.seleniumhq.selenium/selenium-java
                                                org.seleniumhq.selenium/selenium-server
@@ -37,4 +47,5 @@
                    :manual-setup :manual-setup
                    :saucelabs :saucelabs
                    :ci (complement (some-fn :chrome :manual-setup :saucelabs))
-                   :all (fn [m] true)})
+                   :all (fn [m] true)}
+  :uberjar-name "clj-webdriver-uber.jar")
